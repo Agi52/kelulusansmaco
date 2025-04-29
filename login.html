@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      overflow: hidden;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeInScale 1s ease forwards;
+    }
+
+    .login-container h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #0A8151;
+      animation: slideDown 1s ease forwards;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 0.9rem;
+      margin: 0.6rem 0;
+      border: 2px solid #0A8151;
+      border-radius: 30px;
+      background: transparent;
+      outline: none;
+      font-size: 1rem;
+      text-indent: 10px;
+      color: #000;
+      transition: 0.3s;
+    }
+
+    .login-container input[type="text"]:focus,
+    .login-container input[type="password"]:focus {
+      background: rgba(10, 129, 81, 0.1);
+      border-color: #086644;
+    }
+
+    .login-container input::placeholder {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .login-container input[type="submit"] {
+      width: 100%;
+      padding: 0.9rem;
+      background-color: #0A8151;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .login-container input[type="submit"]:hover {
+      background-color: #086644;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: #333;
+      margin-top: 1.2rem;
+      line-height: 1.4;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 1.5rem;
+        border-radius: 15px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInScale {
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideDown {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>LOGIN</h2>
+    <form onsubmit="return login(event)">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" pattern="\\d{8}" required>
+      <input type="submit" value="LOGIN">
+    </form>
+    <div class="note">
+      Lupa Password/Username?<br>
+      Hubungi Admin Sekolah!
+    </div>
+  </div>
+
+  <script>
+    async function login(event) {
+      event.preventDefault();
+  
+      const inputUsername = document.getElementById("username").value.trim();
+      const inputPassword = document.getElementById("password").value.trim();
+  
+      try {
+        const res = await fetch('siswa.json'); // pastikan file ini ada di root/public
+        const users = await res.json();
+  
+        const match = users.find(u =>
+          u.username.toLowerCase() === inputUsername.toLowerCase() &&
+          u.password === inputPassword
+        );
+  
+        if (match) {
+          // Simpan nama asli sesuai data json ke sessionStorage
+          sessionStorage.setItem("nama", match.username);
+          window.location.href = "beranda.html";
+        } else {
+          alert("Username atau password salah.");
+        }
+      } catch (e) {
+        console.error("Error fetching siswa.json:", e);
+        alert("Gagal mengambil data siswa.");
+      }
+    }
+  </script>
+  
+</body>
+</html>

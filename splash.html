@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Splash</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #007f3b;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      padding: 20px;
+      animation: fadeInContainer 1.5s ease-in-out forwards;
+    }
+
+    .logo {
+      width: 250px;
+      max-width: 80%;
+      opacity: 0;
+      animation: popIn 1s ease forwards;
+      animation-delay: 0.5s;
+    }
+
+    .judul, .sub1, .sub2 {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .judul {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-top: 25px;
+      animation: slideFadeIn 1s ease forwards;
+      animation-delay: 2s;
+    }
+
+    .sub1 {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      animation: slideFadeIn 1s ease forwards;
+      animation-delay: 2.5s;
+    }
+
+    .sub2 {
+      margin-top: 10px;
+      font-size: 1rem;
+      animation: slideFadeIn 1s ease forwards;
+      animation-delay: 3s;
+    }
+
+    /* Keyframes Animations */
+    @keyframes fadeInContainer {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideFadeIn {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="logo.png" alt="Logo SMAS Cokroaminoto Banjarnegara">
+    <h1 class="judul">PENGUMUMAN KELULUSAN</h1>
+    <p class="sub1">SMAS COKROAMINOTO BANJARNEGARA</p>
+    <p class="sub2">TAHUN AJARAN 2024-2025</p>
+  </div>
+
+  <script>
+    // Redirect otomatis ke halaman login setelah 5 detik
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 5000);
+  </script>
+</body>
+</html>

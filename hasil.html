@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hasil Kelulusan</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #333;
+      position: relative;
+    }
+    .box {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      z-index: 2;
+      animation: fadeInUp 1.2s ease forwards;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #0A8151;
+      animation: fadeIn 2s ease forwards;
+    }
+    .nama {
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin: 0.5rem 0;
+      animation: fadeIn 2.5s ease forwards;
+    }
+    .status {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      animation: fadeIn 3s ease forwards;
+    }
+    .status.lulus {
+      color: #0A8151;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-top: 1.2rem;
+      animation: fadeIn 3.5s ease forwards;
+    }
+    .btn-cetak {
+      background-color: #0A8151;
+      border: none;
+      padding: 10px 25px;
+      color: white;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      animation: fadeIn 4s ease forwards;
+    }
+    .btn-cetak:hover {
+      background-color: #086644;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: #333;
+      margin-top: 1.5rem;
+      animation: fadeIn 4.5s ease forwards;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fireworks"></canvas>
+  <div class="box">
+    <h2>Selamat atas nama</h2>
+    <div class="nama" id="namaSiswa">Nama Kamu</div>
+    <div>dinyatakan :</div>
+    <div class="status lulus">LULUS</div>
+    <p>Apakah Anda ingin mencetak SKL Anda?</p>
+    <a id="cetakLink" class="btn-cetak" href="#" target="_blank">Cetak SKL</a>
+    <div class="note">Info lebih lanjut langsung tanyakan ke Admin !!</div>
+  </div>
+  <audio id="fireworkSound" src="petasan.mp3" autoplay></audio>
+  <script>
+    const nama = sessionStorage.getItem("nama") || "NamaKamu";
+    document.getElementById("namaSiswa").innerText = nama;
+    document.getElementById("cetakLink").href = "skl/" + nama + ".pdf";
+    const audio = document.getElementById("fireworkSound");
+    audio.play().catch(() => { console.log("Autoplay diblokir"); });
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    function createFirework(x, y) {
+      const colors = ["#f00", "#ff0", "#0f0", "#0ff", "#00f", "#f0f"];
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x, y,
+          radius: 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          angle: random(0, 2 * Math.PI),
+          speed: random(1, 6),
+          alpha: 1
+        });
+      }
+    }
+    function updateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter(p => p.alpha > 0.01);
+      for (let p of particles) {
+        p.x += Math.cos(p.angle) * p.speed;
+        p.y += Math.sin(p.angle) * p.speed;
+        p.alpha -= 0.01;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function animate() {
+      requestAnimationFrame(animate);
+      updateParticles();
+    }
+    setInterval(() => {
+      const x = random(200, canvas.width - 200);
+      const y = random(100, canvas.height / 2);
+      createFirework(x, y);
+    }, 1000);
+    animate();
+  </script>
+</body>
+</html>

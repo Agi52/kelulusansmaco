@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #0A8151;
+      animation: slideDown 1s ease forwards;
+    }
+
+    #countdown {
+      font-size: 4rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      color: #222;
+      display: none; /* Awal disembunyikan */
+      transition: transform 0.3s ease;
+    }
+
+    button {
+      background-color: #0A8151;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #086644;
+    }
+
+    .note {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #333;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    /* Animasi Detak */
+    .pulse {
+      animation: pulse 0.4s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5) rotate(-5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    /* Animasi Masuk */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h3>Informasi Kelulusan Anda<br>Dimulai dalam :</h3>
+    <div id="countdown">5</div>
+    <button id="startBtn" onclick="startCountdown()">Mulai</button>
+    <div class="note">
+      Info lebih lanjut langsung tanyakan<br>Admin !!
+    </div>
+  </div>
+
+  <script>
+    function startCountdown() {
+      const display = document.getElementById('countdown');
+      const startBtn = document.getElementById('startBtn');
+
+      // Tampilkan angka countdown dan sembunyikan tombol mulai
+      display.style.display = 'block';
+      startBtn.style.display = 'none';
+
+      let timeLeft = 5;
+      display.textContent = timeLeft;
+
+      const interval = setInterval(() => {
+        timeLeft--;
+        display.textContent = timeLeft;
+
+        // Efek Detak
+        display.classList.remove('pulse');
+        void display.offsetWidth;
+        display.classList.add('pulse');
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          setTimeout(() => {
+            window.location.href = 'hasil.html'; // Redirect setelah selesai
+          }, 500);
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
